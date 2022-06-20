@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, CircularProgress, Container, Grid, TextField } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { collection, addDoc, doc, getDocs } from "firebase/firestore";
 import { useSelector } from 'react-redux/es/exports';
 
@@ -10,6 +10,7 @@ export default function Chat() {
   const user = useSelector(({ user }) => user)
 
   const [messages, setMessages] = React.useState([])
+
 
   const fetchMessage = async () => {
     const data = []
@@ -51,6 +52,41 @@ export default function Chat() {
     return <CircularProgress color="inherit" />
   }
 
+  if (messages.length > 1) {
+    return (
+      <Container>
+        <Grid container
+          justify='center'
+          sx={{ height: window.innerHeight - 50, marginTop: '20px' }}>
+          <Box sx={{ width: '80%', height: '70vh', border: '1px solid red', overflowY: 'auto' }}>
+            {
+              messages.sort((a, b) => a.createDate[0] === b.createDate[0] ? a.createDate[1] < b.createDate[1] : a.createDate[0] < b.createDate[0]).filter(obj => obj.uid !== '5DgyuufCEySnGM0CwSj7iKC0X7k1').map(obj => {
+                return <div
+                  style={{ margin: '10px', border: user.uid === obj.uid ? "5px solid green" : '2px solid black' }}
+                  key={`${Math.random()}_userUid${user.uid}_name${user.name}`}
+                >
+                  <Avatar src={obj.imgUrl} /><span style={{ fontSize: '19px', fontWeight: '700' }}>{obj.name}</span>
+                  <p style={{ fontSize: '16px', fontWeight: '500' }}>{obj.text}</p>
+                </div>
+              })
+            }
+          </Box>
+          <Grid
+            container
+            direction='column'
+            alignItems='flex-end'
+            width='80%'
+          >
+            <form onSubmit={sendMessage} style={{ width: '100%' }}>
+              <TextField variant='outlined' fullWidth maxRows={2} value={value} onChange={e => setValue(e.target.value)} />
+              <Button onClick={sendMessage} variant='contained' type='submit'>send</Button>
+            </form>
+          </Grid>
+        </Grid>
+      </Container >
+    )
+  }
+
   return (
     <Container>
       <Grid container
@@ -63,7 +99,8 @@ export default function Chat() {
                 style={{ margin: '10px', border: user.uid === obj.uid ? "5px solid green" : '2px solid black' }}
                 key={`${Math.random()}_userUid${user.uid}_name${user.name}`}
               >
-                <Avatar src={obj.imgUrl} />{obj.text}
+                <Avatar src={obj.imgUrl} /><span style={{ fontSize: '19px', fontWeight: '700' }}>{obj.name}</span>
+                <p style={{ fontSize: '16px', fontWeight: '500' }}>{obj.text}</p>
               </div>
             })
           }
