@@ -60,7 +60,7 @@ export default function Chat() {
           sx={{ height: window.innerHeight - 50, marginTop: '20px' }}>
           <Box sx={{ width: '80%', height: '70vh', border: '1px solid red', overflowY: 'auto' }}>
             {
-              messages.sort((a, b) => a - b).filter(obj => obj.uid !== '5DgyuufCEySnGM0CwSj7iKC0X7k1').map(obj => {
+              messages.sort((a, b) => a - b).filter(obj => obj.imgUrl !== 'https://e7.pngegg.com/pngimages/349/288/png-clipart-teacher-education-student-course-school-avatar-child-face.png' ).map(obj => {
                 return <div
                   style={{ margin: '10px', border: user.uid === obj.uid ? "5px solid green" : '2px solid black' }}
                   key={`${Math.random()}_userUid${user.uid}_name${user.name}`}
