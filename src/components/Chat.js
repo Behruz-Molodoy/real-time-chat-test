@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, CircularProgress, Container, Grid, TextField } from '@mui/material'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { collection, addDoc, doc, getDocs } from "firebase/firestore";
 import { useSelector } from 'react-redux/es/exports';
 
@@ -37,7 +37,7 @@ export default function Chat() {
         name: user.name,
         imgUrl: user.imgUrl,
         text: value,
-        createDate: [new Date().getHours(), new Date().getMinutes()]
+        createDate: messages.length
       });
       setValue('')
       console.log("Document written with ID: ", docRef.id);
@@ -60,7 +60,7 @@ export default function Chat() {
           sx={{ height: window.innerHeight - 50, marginTop: '20px' }}>
           <Box sx={{ width: '80%', height: '70vh', border: '1px solid red', overflowY: 'auto' }}>
             {
-              messages.sort((a, b) => a.createDate[0] === b.createDate[0] ? a.createDate[1] < b.createDate[1] : a.createDate[0] < b.createDate[0]).filter(obj => obj.uid !== '5DgyuufCEySnGM0CwSj7iKC0X7k1').map(obj => {
+              messages.sort((a, b) => a - b).filter(obj => obj.uid !== '5DgyuufCEySnGM0CwSj7iKC0X7k1').map(obj => {
                 return <div
                   style={{ margin: '10px', border: user.uid === obj.uid ? "5px solid green" : '2px solid black' }}
                   key={`${Math.random()}_userUid${user.uid}_name${user.name}`}
@@ -94,7 +94,7 @@ export default function Chat() {
         sx={{ height: window.innerHeight - 50, marginTop: '20px' }}>
         <Box sx={{ width: '80%', height: '70vh', border: '1px solid red', overflowY: 'auto' }}>
           {
-            messages.sort((a, b) => a.createDate[0] === b.createDate[0] ? a.createDate[1] < b.createDate[1] : a.createDate[0] < b.createDate[0]).map(obj => {
+            messages.sort((a, b) => a - b).map(obj => {
               return <div
                 style={{ margin: '10px', border: user.uid === obj.uid ? "5px solid green" : '2px solid black' }}
                 key={`${Math.random()}_userUid${user.uid}_name${user.name}`}
