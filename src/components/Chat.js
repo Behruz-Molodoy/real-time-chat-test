@@ -48,6 +48,10 @@ export default function Chat() {
     fetchMessage()
   }
 
+  setInterval(() => {
+    fetchMessage()
+  }, 500)
+
   if (!messages.length) {
     return <CircularProgress color="inherit" />
   }
